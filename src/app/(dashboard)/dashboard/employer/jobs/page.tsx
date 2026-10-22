@@ -45,7 +45,11 @@ export default function EmployerJobsPage() {
         </Link>
       </div>
       {error && (
-        <p aria-live="assertive" className="auth-message auth-message--error" role="alert">
+        <p
+          aria-live="assertive"
+          className="auth-message auth-message--error"
+          role="alert"
+        >
           {error}
         </p>
       )}
@@ -59,12 +63,14 @@ export default function EmployerJobsPage() {
           {jobs.map((job) => (
             <article className="job-card" key={job.id}>
               <div className="job-card-top">
-                <span className="eyebrow">Preview post</span>
-                <span className="job-tag job-tag--accent">Not published</span>
+                <span className="eyebrow">Published job</span>
+                <span className="job-tag job-tag--accent">Live</span>
               </div>
               <h2 className="job-card-title">{job.title}</h2>
               <p className="job-card-location">
-                {job.isRemote ? `Remote · ${job.state}` : `${job.city}, ${job.state}`}
+                {job.isRemote
+                  ? `Remote · ${job.state}`
+                  : `${job.city}, ${job.state}`}
               </p>
               <p className="job-card-summary">{job.summary}</p>
               <div className="badge-row">

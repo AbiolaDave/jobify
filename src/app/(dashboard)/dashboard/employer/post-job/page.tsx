@@ -33,7 +33,11 @@ export default function PostJobPage() {
     const salaryMax = optionalAmount(String(values.get("salaryMax") ?? ""));
     const whatsappRaw = String(values.get("whatsappPhone") ?? "");
     const whatsappPhone = normalizePhone(whatsappRaw);
-    if (salaryMin !== undefined && salaryMax !== undefined && salaryMin > salaryMax) {
+    if (
+      salaryMin !== undefined &&
+      salaryMax !== undefined &&
+      salaryMin > salaryMax
+    ) {
       setError("Minimum pay can’t be greater than maximum pay.");
       return null;
     }
@@ -60,7 +64,8 @@ export default function PostJobPage() {
       category: String(values.get("category") ?? ""),
       salaryMin,
       salaryMax,
-      salaryPeriod: values.get("salaryPeriod") === "yearly" ? "yearly" : "monthly",
+      salaryPeriod:
+        values.get("salaryPeriod") === "yearly" ? "yearly" : "monthly",
       summary: String(values.get("summary") ?? "").trim(),
       description: String(values.get("description") ?? "").trim(),
       requirements,
@@ -97,11 +102,10 @@ export default function PostJobPage() {
     return (
       <main className="page-shell dashboard-content">
         <div className="empty-state">
-          <p className="eyebrow">Draft created</p>
+          <p className="eyebrow">Job published</p>
           <h1 className="section-heading">Your job post is ready.</h1>
           <p className="muted-copy">
-            It has been saved in this browser preview. Connect the employer
-            endpoint to publish it for real.
+            Candidates can now find this role and apply through Jobify.
           </p>
           <div className="badge-row">
             <Link className="button-primary" href="/dashboard/employer/jobs">
@@ -137,15 +141,27 @@ export default function PostJobPage() {
           <JobDescriptionFields />
 
           {error && (
-            <p aria-live="assertive" className="auth-message auth-message--error" role="alert">
+            <p
+              aria-live="assertive"
+              className="auth-message auth-message--error"
+              role="alert"
+            >
               {error}
             </p>
           )}
           <div className="badge-row">
-            <button className="button-secondary" onClick={showPreview} type="button">
+            <button
+              className="button-secondary"
+              onClick={showPreview}
+              type="button"
+            >
               Preview post
             </button>
-            <button className="button-primary" disabled={isSubmitting} type="submit">
+            <button
+              className="button-primary"
+              disabled={isSubmitting}
+              type="submit"
+            >
               {isSubmitting ? "Saving…" : "Create job post"}
             </button>
           </div>

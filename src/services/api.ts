@@ -35,30 +35,10 @@ export async function applyToJob(job: Job): Promise<JobApplication> {
 }
 
 export async function createJob(input: CreateJobInput): Promise<Job> {
-  const titleSlug = input.title
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-
-  const job: Job = {
-    ...input,
-    id: `mock-${Date.now()}`,
-    slug: titleSlug || "new-job",
-    employer: {
-      id: "demo-employer",
-      name: "Your company",
-      initials: "YC",
-      industry: "Technology",
-      isVerified: false,
-      location: input.state,
-    },
-    postedAt: new Date().toISOString().slice(0, 10),
-    isFeatured: false,
-  };
-  const jobs = readMockStorage<Job[]>(STORAGE_KEYS.employerJobs, []);
-  writeMockStorage(STORAGE_KEYS.employerJobs, [job, ...jobs]);
-  return job;
+  return requestApi<Job>("/api/jobs", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
 }
 
 export async function login(input: LoginRequest): Promise<OtpChallenge> {
@@ -125,7 +105,11 @@ export async function getMyApplications(): Promise<JobApplication[]> {
 
 export async function getAuthSession(): Promise<{
   authenticated: boolean;
-  session: { userId: string; role: "seeker" | "employer"; email: string } | null;
+  session: {
+    userId: string;
+    role: "seeker" | "employer";
+    email: string;
+  } | null;
 }> {
   return requestApi("/api/auth/session");
 }
@@ -181,30 +165,28 @@ export async function reportJob(
 }
 
 export async function getMyJobs(): Promise<Job[]> {
-  return readMockStorage<Job[]>(STORAGE_KEYS.employerJobs, []);
+  return requestApi<Job[]>("/api/jobs/mine");
 }
 
 export async function getApplicants(jobId: string): Promise<Applicant[]> {
-  void jobId;
-  return [];
+  return requestApi<Applicant[]>(
+    `/api/applications?jobId=${encodeURIComponent(jobId)}`,
+  );
 }
 
 export async function updateApplicationStatus(
   update: ApplicationStatusUpdate,
-): Promise<{ applicationId: string; status: ApplicationStatusUpdate["status"] }> {
-  const applications = readMockStorage<JobApplication[]>(
-    STORAGE_KEYS.applications,
-    [],
+): Promise<{
+  applicationId: string;
+  status: ApplicationStatusUpdate["status"];
+}> {
+  return requestApi(
+    `/api/applications/${encodeURIComponent(update.applicationId)}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ status: update.status }),
+    },
   );
-  writeMockStorage(
-    STORAGE_KEYS.applications,
-    applications.map((application) =>
-      application.id === update.applicationId
-        ? { ...application, status: update.status }
-        : application,
-    ),
-  );
-  return { applicationId: update.applicationId, status: update.status };
 }
 
 export async function uploadCv(
@@ -244,7 +226,10 @@ async function requestApi<T>(url: string, init: RequestInit = {}): Promise<T> {
   const result: unknown = await response.json();
   if (!response.ok) {
     const message =
-      result && typeof result === "object" && "error" in result && typeof result.error === "string"
+      result &&
+      typeof result === "object" &&
+      "error" in result &&
+      typeof result.error === "string"
         ? result.error
         : "The request could not be completed.";
     const error = new Error(message) as Error & { status?: number };

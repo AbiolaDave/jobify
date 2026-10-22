@@ -6,6 +6,8 @@ import JobActions from "@/app/shared/components/jobActions";
 import JobCard from "@/app/shared/components/jobCard";
 import { getJob, getJobs } from "@/services/jobs";
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -14,7 +16,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const job = await getJob(slug);
   return {
-    title: job ? `${job.title} at ${job.employer.name} | Jobify` : "Job not found | Jobify",
+    title: job
+      ? `${job.title} at ${job.employer.name} | Jobify`
+      : "Job not found | Jobify",
     description: job?.summary ?? "Browse trusted job opportunities on Jobify.",
   };
 }
@@ -59,7 +63,9 @@ export default async function JobDetailsPage({ params }: Props) {
           <h1 className="section-heading">{job.title}</h1>
           <p className="job-card-location">
             <MapPin size={17} aria-hidden="true" />
-            {job.isRemote ? `Remote · ${job.state}` : `${job.city}, ${job.state}`}
+            {job.isRemote
+              ? `Remote · ${job.state}`
+              : `${job.city}, ${job.state}`}
           </p>
           <div className="badge-row">
             <span className="job-tag">{job.type}</span>

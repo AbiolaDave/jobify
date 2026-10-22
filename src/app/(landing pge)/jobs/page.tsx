@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import JobFiltersPanel from "@/app/shared/components/jobFiltersPanel";
 import JobResults from "@/app/shared/components/jobResults";
-import { employmentTypes, experienceLevels, jobCategories } from "@/data/jobOptions";
+import {
+  employmentTypes,
+  experienceLevels,
+  jobCategories,
+} from "@/data/jobOptions";
 import { getJobs } from "@/services/jobs";
-import type {
-  EmploymentType,
-  ExperienceLevel,
-  JobFilters,
-} from "@/types/jobs";
+import type { EmploymentType, ExperienceLevel, JobFilters } from "@/types/jobs";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Find a job | Jobify",

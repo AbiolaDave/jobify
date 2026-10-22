@@ -22,7 +22,7 @@ const jobCategories = [
 ];
 
 export default async function HomePage() {
-  const { jobs: featuredJobs, warning } = await getFeaturedJobs();
+  const { jobs: featuredJobs } = await getFeaturedJobs();
 
   return (
     <main>
@@ -116,11 +116,6 @@ export default async function HomePage() {
             Browse all jobs <ArrowRight size={17} aria-hidden="true" />
           </Link>
         </div>
-        {warning && (
-          <p aria-live="polite" className="auth-message" role="status">
-            {warning}
-          </p>
-        )}
         <div className="job-grid">
           {featuredJobs.map((job) => (
             <JobCard key={job.id} job={job} />
@@ -151,7 +146,9 @@ export default async function HomePage() {
         <div className="trust-panel">
           <div>
             <p className="eyebrow">Your safety comes first</p>
-            <h2 className="section-heading">A job should never cost you money.</h2>
+            <h2 className="section-heading">
+              A job should never cost you money.
+            </h2>
             <p className="muted-copy">
               Jobify is built to make opportunities clearer and safer for
               everyone. Look for verified employers and trust your instincts.
@@ -167,7 +164,8 @@ export default async function HomePage() {
               </span>
             </p>
             <Link className="button-secondary" href="/about">
-              Learn about staying safe <ArrowRight size={17} aria-hidden="true" />
+              Learn about staying safe{" "}
+              <ArrowRight size={17} aria-hidden="true" />
             </Link>
           </div>
         </div>

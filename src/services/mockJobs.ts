@@ -66,7 +66,8 @@ const mockJobs: Job[] = [
     salaryMin: 250000,
     salaryMax: 400000,
     salaryPeriod: "monthly",
-    summary: "Help shape clear, thoughtful payment experiences for people and businesses.",
+    summary:
+      "Help shape clear, thoughtful payment experiences for people and businesses.",
     description:
       "Work with product managers and engineers to make everyday payments simpler. You will contribute to discovery, wireframes, prototypes, and polished product experiences.",
     requirements: [
@@ -92,7 +93,8 @@ const mockJobs: Job[] = [
     salaryMin: 300000,
     salaryMax: 450000,
     salaryPeriod: "monthly",
-    summary: "Start your engineering career building useful products with a supportive team.",
+    summary:
+      "Start your engineering career building useful products with a supportive team.",
     description:
       "Join a small product team as an early-career engineer. You will ship customer-facing features, learn through code reviews, and work closely with experienced teammates.",
     requirements: [
@@ -118,7 +120,8 @@ const mockJobs: Job[] = [
     salaryMin: 180000,
     salaryMax: 260000,
     salaryPeriod: "monthly",
-    summary: "Support members and help them get more value from their financial tools.",
+    summary:
+      "Support members and help them get more value from their financial tools.",
     description:
       "Be a friendly first point of contact for customers. You will respond to questions, document feedback, and work with product and operations to resolve issues.",
     requirements: [
@@ -143,7 +146,8 @@ const mockJobs: Job[] = [
     salaryMin: 150000,
     salaryMax: 220000,
     salaryPeriod: "monthly",
-    summary: "Build accessible interfaces and learn modern frontend practices on the job.",
+    summary:
+      "Build accessible interfaces and learn modern frontend practices on the job.",
     description:
       "Pair with the frontend team to improve web experiences, fix interface issues, and grow your skills through practical, mentored work.",
     requirements: [
@@ -168,7 +172,8 @@ const mockJobs: Job[] = [
     salaryMin: 220000,
     salaryMax: 300000,
     salaryPeriod: "monthly",
-    summary: "Help create a smooth, welcoming experience for a growing distributed team.",
+    summary:
+      "Help create a smooth, welcoming experience for a growing distributed team.",
     description:
       "Support the people team with onboarding coordination, documentation, and employee requests. This is a hands-on role with room to grow.",
     requirements: [
@@ -193,7 +198,8 @@ const mockJobs: Job[] = [
     salaryMin: 80000,
     salaryMax: 150000,
     salaryPeriod: "monthly",
-    summary: "Create helpful, engaging learning content for young Nigerian audiences.",
+    summary:
+      "Create helpful, engaging learning content for young Nigerian audiences.",
     description:
       "Work with the content team on short-form educational and marketing content. The role is remote and project-based, with clear briefs and feedback.",
     requirements: [
@@ -205,6 +211,10 @@ const mockJobs: Job[] = [
     isFeatured: false,
   },
 ];
+
+export function getAllMockJobs(): Job[] {
+  return [...mockJobs];
+}
 
 export async function getJobs(
   filters: JobFilters = {},
@@ -241,9 +251,13 @@ export async function getJobs(
   });
 
   if (filters.sort === "salary") {
-    filtered.sort((first, second) => (second.salaryMax ?? 0) - (first.salaryMax ?? 0));
+    filtered.sort(
+      (first, second) => (second.salaryMax ?? 0) - (first.salaryMax ?? 0),
+    );
   } else {
-    filtered.sort((first, second) => second.postedAt.localeCompare(first.postedAt));
+    filtered.sort((first, second) =>
+      second.postedAt.localeCompare(first.postedAt),
+    );
   }
 
   const pageSize = Math.max(1, filters.pageSize ?? 6);
