@@ -16,7 +16,7 @@
     "joi": "^17.13.3",
     "lucide-react": "^0.518.0",
     "mongoose": "^9.9.1",
-    "next": "15.3.2",
+    "next": "^16.4.2",
     "nodemailer": "^10.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
